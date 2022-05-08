@@ -53,7 +53,6 @@ void on_app_activate(int argc, char** argv, char* gmodule){
 
     g_slice_free (connect_args, args);
 
-    gtk_builder_connect_signals(builder->gobj(), NULL);
     Gtk::Window* main_win;
     builder->get_widget<Gtk::Window>("main_win", main_win);
 
