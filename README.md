@@ -2,10 +2,10 @@
 
 Consider the following two programs, glossing over what compiler flags we need to get them running. (See the `Makefile`).
 https://github.com/rsekman/gtk-glade-dl/blob/c53be75926d6505898d95a794e2fa46530cdddf3/demo.cpp#L1-L27
-https://github.com/rsekman/gtk-glade-dl/blob/c53be75926d6505898d95a794e2fa46530cdddf3/dl.c#L1-L19
+https://github.com/rsekman/gtk-glade-dl/blob/c53be75926d6505898d95a794e2fa46530cdddf3/dl.c#L6-L19
 
 On their face, the programs should have the same behaviour: both the entry point of `demo` and `dl` call `on_app_activate`.
-What we expect to happen is a window to open, containing a button we can click to quick the program. `demo` works as expected.
+What we expect to happen is a window to open, containing a button we can click to quit the program. `demo` works as expected.
 On running `dl`, however, we are faced with a warning from Gtk
 ```
 (dl:2875124): Gtk-WARNING **: 14:19:58.729: Could not find signal handler 'on_quit_btn_clicked'
