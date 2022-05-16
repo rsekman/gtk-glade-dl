@@ -3,7 +3,7 @@
 #include <gtk/gtk.h>
 #include <pthread.h>
 
-typedef void (*activate_t)(int, char**, char*);
+typedef void (*activate_t)(int, char**, int);
 
 int main(int argc, char** argv) {
     activate_t activate;
@@ -14,6 +14,6 @@ int main(int argc, char** argv) {
         return 1;
     }
     activate = (activate_t) dlsym(handle, "on_app_activate");
-    activate(argc, argv, gmodule);
+    activate(argc, argv, 1);
     return 0;
 }

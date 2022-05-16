@@ -1,4 +1,5 @@
 #include <gtkmm.h>
+#include <execinfo.h>
 
 extern "C"
 void on_quit_btn_clicked(){
@@ -37,7 +38,18 @@ gtk_builder_connect_signals_default (GtkBuilder    *builder,
 }
 
 extern "C"
-void on_app_activate(int argc, char** argv, char* gmodule){
+void on_app_activate(int argc, char** argv, int dynamic){
+    char* gmodule = NULL;
+    char** bt_symbols = NULL;
+    if (dynamic) {
+        void* trace[1];
+        int trace_l = backtrace(trace, 1);
+        bt_symbols = backtrace_symbols(trace, trace_l);
+        *strchr(bt_symbols[0], '(') = '\0';
+        gmodule = bt_symbols[0];
+        printf("Looking up symbols in %s.\n", gmodule);
+    }
+
     Gtk::Main app = Gtk::Main(argc, argv, false);
     builder = Gtk::Builder::create();
     builder->add_from_file("demo.ui");
@@ -55,10 +67,11 @@ void on_app_activate(int argc, char** argv, char* gmodule){
 
     Gtk::Window* main_win;
     builder->get_widget<Gtk::Window>("main_win", main_win);
+    free(bt_symbols);
 
     app.run(*main_win);
 }
 
 int main(int argc, char** argv ) {
-    on_app_activate(argc, argv, NULL);
+    on_app_activate(argc, argv, 0);
 }

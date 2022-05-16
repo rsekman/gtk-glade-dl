@@ -46,3 +46,5 @@ https://github.com/rsekman/gtk-glade-dl/blob/0f5df9b8e94742ed68fda21141e7d60317b
 https://github.com/rsekman/gtk-glade-dl/blob/0f5df9b8e94742ed68fda21141e7d60317bef41f/dl.c#L17
 
 After recompiling, `dl` now works: clicking the quit button does, in fact, quit.
+
+Instead of passing the filename as a string, we can deduce it through introspection.
