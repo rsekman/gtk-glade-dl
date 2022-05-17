@@ -48,3 +48,17 @@ https://github.com/rsekman/gtk-glade-dl/blob/0f5df9b8e94742ed68fda21141e7d60317b
 After recompiling, `dl` now works: clicking the quit button does, in fact, quit.
 
 Instead of passing the filename as a string, we can deduce it through introspection.
+With the `backtrace()` and `backtrace_symbols()` functions from `execinfo.h` (see [backtrace(3) man page](https://man7.org/linux/man-pages/man3/backtrace.3.html)), we can obtain backtraces that look something like
+```
+./demo.so(on_app_activate+0x202) [0x7fc6c66c1752]
+```
+The first stack frame from `backtrace()` must be in the file containing `on_app_activate`.
+We can then just cut out the file name, and pass that to `gmodule`
+https://github.com/rsekman/gtk-glade-dl/blob/0e73a2db7278369ed6cc4752d693d38cf472f6d6/demo.cpp#L45-L50
+(Of course, we should really use something more sophisticated, like a regular expression, for this in case the file name could contain `(`.)
+
+For some reason that I do not understand, when loading dynamically the leading `./` must be present;
+but when running as the main program, it must be *absent*.
+Therefore the third argument to `on_app_activate` is not dropped, but changed to a flag
+https://github.com/rsekman/gtk-glade-dl/blob/0e73a2db7278369ed6cc4752d693d38cf472f6d6/demo.cpp#L41-L44
+so that we can still pass `NULL` if running as the main program.
